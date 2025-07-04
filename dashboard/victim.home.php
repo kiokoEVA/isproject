@@ -23,25 +23,8 @@ if (!isset($_SESSION['user']) || strtolower($_SESSION['user']['role']) !== 'vict
         }
 
         .header {
-            display: flex;
-            align-items: center;
             padding: 2rem;
-        }
-
-        .logo-container {
-            width: 150px;
-            height: 150px;
-            background-color: #d9534f; /* Red */
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 10px;
-        }
-
-        .logo {
-            max-width: 100%;
-            max-height: 100%;
+            text-align: center;
         }
 
         .option-card {
@@ -68,7 +51,7 @@ if (!isset($_SESSION['user']) || strtolower($_SESSION['user']['role']) !== 'vict
 
         .icon {
             font-size: 2rem;
-            margin-right: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .btn-custom {
@@ -86,11 +69,7 @@ if (!isset($_SESSION['user']) || strtolower($_SESSION['user']['role']) !== 'vict
 
         @media (max-width: 768px) {
             .header {
-                flex-direction: column;
-                align-items: center;
-            }
-            .logo-container {
-                margin-bottom: 1rem;
+                padding: 1.5rem;
             }
         }
     </style>
@@ -103,10 +82,7 @@ if (!isset($_SESSION['user']) || strtolower($_SESSION['user']['role']) !== 'vict
         <!-- Header -->
         <div class="col-12">
             <div class="header">
-                <div class="logo-container">
-                    <img src="images/kp_logo.png" alt="Kenya Police Logo" class="logo">
-                </div>
-                <h1 class="ml-3">Welcome, <?= htmlspecialchars($_SESSION['user']['name'] ?? 'Victim') ?></h1>
+                <h1>Welcome, <?= htmlspecialchars($_SESSION['user']['name'] ?? 'Victim') ?></h1>
             </div>
         </div>
 
@@ -117,24 +93,20 @@ if (!isset($_SESSION['user']) || strtolower($_SESSION['user']['role']) !== 'vict
                 <!-- Request Abstract Button -->
                 <div class="col-md-6">
                     <div class="option-card green-card">
-                        <div class="d-flex justify-content-center align-items-center mb-2">
-                            <i class="fas fa-file-medical icon"></i>
-                            <h4>Request Abstract</h4>
-                        </div>
+                        <i class="fas fa-file-medical icon"></i>
+                        <h4>Request Abstract</h4>
                         <p class="text-muted">Fill out a report to request your police abstract.</p>
-                        <a href="submit_report.php" class="btn-custom">Submit Report</a>
+                        <a href="victim_upload.php" class="btn-custom">Submit Report</a>
                     </div>
                 </div>
 
                 <!-- Track Status Button -->
                 <div class="col-md-6">
                     <div class="option-card red-card">
-                        <div class="d-flex justify-content-center align-items-center mb-2">
-                            <i class="fas fa-search-location icon"></i>
-                            <h4>Track Abstract Status</h4>
-                        </div>
+                        <i class="fas fa-search-location icon"></i>
+                        <h4>Track Abstract Status</h4>
                         <p class="text-muted">Check the status of your submitted reports.</p>
-                        <a href="track_status.php" class="btn-custom">View Status</a>
+                        <a href="../submissions/track_status.php" class="btn-custom">View Status</a>
                     </div>
                 </div>
 
@@ -142,7 +114,7 @@ if (!isset($_SESSION['user']) || strtolower($_SESSION['user']['role']) !== 'vict
         </div>
 
         <!-- Logout Button -->
-        <div class="col-12 text-center mt-4">
+        <div class="col-12 text-center mt-4 mb-5">
             <a href="logout.php" class="btn btn-danger">Logout</a>
         </div>
 

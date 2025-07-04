@@ -50,7 +50,8 @@ $error = $_GET['error'] ?? '';
         <div class="alert alert-danger"><?= htmlspecialchars(urldecode($error)) ?></div>
     <?php endif; ?>
 
-    <form action="submit_offence.php" method="POST" enctype="multipart/form-data">
+    <form action="../submissions/submit.php" method="POST" enctype="multipart/form-data">
+
 
         <!-- Offence Type -->
         <div class="mb-3">

@@ -22,7 +22,7 @@ $request_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
     <h2 class="mb-4">Thank You!</h2>
     <p>Your report has been successfully submitted.</p>
     <p><strong>Reference ID:</strong> <?= htmlspecialchars($request_id) ?></p>
-    <a href="dashboard/victim_dashboard.php" class="btn btn-primary">Track My Request</a>
+    <a href="track_status.php" class="btn btn-primary">Track My Request</a>
 </div>
 
 </body>

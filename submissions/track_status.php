@@ -104,10 +104,13 @@ $result = $stmt->get_result();
 
     <!-- Back/Home Buttons -->
     <!-- Back/Home Buttons -->
+<!-- Back/Home Buttons -->
 <div class="d-flex justify-content-between mt-4">
-    <a href="../dashboard/victim_dashboard.php" class="btn btn-outline-secondary">Back to Dashboard</a>
-    <a href="submit.php" class="btn btn-primary">Submit New Report</a>
+    <!-- Go up one level to access dashboard folder -->
+    <a href="../dashboard/victim.home.php" class="btn btn-outline-secondary">Back to Dashboard</a>
+    <a href="../dashboard/victim_upload.php" class="btn btn-primary">Submit New Report</a>
 </div>
+
     </div>
 </div>
 
