@@ -33,15 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Redirect based on role
                 switch ($user['role']) {
                     case 'victim':
-                        header("Location: victim/dashboard.php");
+                        header("Location:  dashboard/victim.home.php");
                         break;
                     case 'police':
-                        header("Location: police/view_requests.php");
+                        header("Location: dashboard/officer.php");
                         break;
                     case 'lawyer':
                         header("Location: lawyer/view_abstracts.php");
                         break;
-                    case 'admin': // Assuming admin handles insurance validation
+                    case 'insurance': 
                         header("Location: admin/manage_insurance.php");
                         break;
                     default:
@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="victim">Victim</option>
                 <option value="police">Police Officer</option>
                 <option value="lawyer">Lawyer</option>
-                <option value="admin">Insurance </option>
+                <option value="insurance">Insurance representative </option>
             </select>
         </div>
 

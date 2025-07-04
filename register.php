@@ -5,13 +5,14 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     include 'includes/db.php'; // Your database connection file
 
+    $id = $conn->real_escape_string($_POST['id']); // New line
     $name = $conn->real_escape_string($_POST['name']);
     $email = $conn->real_escape_string($_POST['email']);
     $password = $_POST['password'];
     $role = $_POST['role'];
 
     // Validate input
-    if (empty($name) || empty($email) || empty($password) || empty($role)) {
+    if (empty($id) || empty($name) || empty($email) || empty($password) || empty($role)) { // Updated line
         $error = "All fields are required.";
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Invalid email format.";
@@ -30,9 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Insert user into database
             $insert_stmt = $conn->prepare("
-                INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)
+                INSERT INTO users (id, name, email, password, role) VALUES (?, ?, ?, ?, ?)
             ");
-            $insert_stmt->bind_param("ssss", $name, $email, $hashed_password, $role);
+            $insert_stmt->bind_param("sssss", $id, $name, $email, $hashed_password, $role); // Updated line
 
             if ($insert_stmt->execute()) {
                 $_SESSION['success'] = "Registration successful! Please log in.";
@@ -51,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Register - Kenya Police Abstract System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"  rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap @5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f7f9fc;
@@ -81,6 +82,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <form method="post" action="register.php">
         <div class="mb-3">
+            <label for="id" class="form-label">User ID</label>
+            <input type="text" name="id" id="id" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
             <label for="name" class="form-label">Full Name</label>
             <input type="text" name="name" id="name" class="form-control" required>
         </div>
@@ -102,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="victim">Victim</option>
                 <option value="police">Police Officer</option>
                 <option value="lawyer">Lawyer</option>
-                <option value="admin">Insurance Validator (Admin)</option>
+                <option value="insurance">Insurance</option>
             </select>
         </div>
 
@@ -114,6 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </p>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap @5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> 
 </body>
 </html>
