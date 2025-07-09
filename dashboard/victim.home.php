@@ -1,4 +1,4 @@
-<?php
+<?php 
 session_start();
 
 // Ensure user is logged in and is a victim
@@ -14,113 +14,137 @@ if (!isset($_SESSION['user']) || strtolower($_SESSION['user']['role']) !== 'vict
 <head>
     <meta charset="UTF-8">
     <title>Victim Dashboard - Kenya Police Abstract System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap @5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css ">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Bootstrap & FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
+            background: linear-gradient(to right, #006400, #000, #b41c1c);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 15px;
         }
 
-        .header {
+        .dashboard-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
             padding: 2rem;
-            text-align: center;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-weight: bold;
+            font-size: 2rem;
+            color: #fff;
         }
 
         .option-card {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            border-radius: 10px;
+            padding: 2rem 1rem;
+            border-radius: 12px;
             text-align: center;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            color: #fff;
+            height: 100%;
         }
 
         .option-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
 
         .green-card {
-            background-color: #007b33; /* Green */
-            color: white;
+            background-color: #006400;
         }
 
         .red-card {
-            background-color: #d9534f; /* Red */
-            color: white;
+            background-color: #b41c1c;
         }
 
         .icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
         }
 
         .btn-custom {
-            background-color: transparent;
-            border: none;
-            color: inherit;
+            display: inline-block;
+            padding: 0.5rem 1rem;
             font-weight: bold;
+            color: #fff;
+            border: 2px solid #fff;
+            border-radius: 30px;
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: background-color 0.3s ease;
         }
 
         .btn-custom:hover {
-            text-decoration: underline;
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
-        @media (max-width: 768px) {
-            .header {
-                padding: 1.5rem;
-            }
+        .logout-btn {
+            margin-top: 30px;
+        }
+
+        .logout-btn a {
+            background-color: #000;
+            border: none;
+            padding: 10px 24px;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .logout-btn a:hover {
+            background-color: #333;
         }
     </style>
 </head>
 <body>
 
-<div class="container-fluid p-0 m-0">
-    <div class="row g-0">
+<div class="dashboard-container text-center">
+    <div class="header mb-4">
+        <h1><i class="fas fa-user-shield me-2"></i>Welcome, <?= htmlspecialchars($_SESSION['user']['name'] ?? 'Victim') ?></h1>
+        <p class="text-white-50">Manage and track your police abstract reports with ease.</p>
+    </div>
 
-        <!-- Header -->
-        <div class="col-12">
-            <div class="header">
-                <h1>Welcome, <?= htmlspecialchars($_SESSION['user']['name'] ?? 'Victim') ?></h1>
+    <div class="row g-4 justify-content-center">
+        <!-- Submit Report -->
+        <div class="col-md-6">
+            <div class="option-card green-card h-100">
+                <i class="fas fa-file-medical icon"></i>
+                <h4 class="fw-bold">Request Abstract</h4>
+                <p>Fill out a report to request your police abstract.</p>
+                <a href="victim_upload.php" class="btn-custom mt-3">Submit Report</a>
             </div>
         </div>
 
-        <!-- Buttons -->
-        <div class="col-12">
-            <div class="row g-3 justify-content-center">
-
-                <!-- Request Abstract Button -->
-                <div class="col-md-6">
-                    <div class="option-card green-card">
-                        <i class="fas fa-file-medical icon"></i>
-                        <h4>Request Abstract</h4>
-                        <p class="text-muted">Fill out a report to request your police abstract.</p>
-                        <a href="victim_upload.php" class="btn-custom">Submit Report</a>
-                    </div>
-                </div>
-
-                <!-- Track Status Button -->
-                <div class="col-md-6">
-                    <div class="option-card red-card">
-                        <i class="fas fa-search-location icon"></i>
-                        <h4>Track Abstract Status</h4>
-                        <p class="text-muted">Check the status of your submitted reports.</p>
-                        <a href="../submissions/track_status.php" class="btn-custom">View Status</a>
-                    </div>
-                </div>
-
+        <!-- Track Status -->
+        <div class="col-md-6">
+            <div class="option-card red-card h-100">
+                <i class="fas fa-search-location icon"></i>
+                <h4 class="fw-bold">Track Abstract Status</h4>
+                <p>Check the status of your submitted reports anytime.</p>
+                <a href="../submissions/track_status.php" class="btn-custom mt-3">View Status</a>
             </div>
         </div>
+    </div>
 
-        <!-- Logout Button -->
-        <div class="col-12 text-center mt-4 mb-5">
-            <a href="logout.php" class="btn btn-danger">Logout</a>
-        </div>
-
+    <div class="logout-btn text-center mt-5">
+        <a href="../login.php"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap @5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

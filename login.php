@@ -1,18 +1,15 @@
-<?php
+<?php 
 session_start();
 
-// Initialize error message
 $error = '';
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    include 'includes/db.php'; // Database connection
+    include 'includes/db.php';
 
     $email = $conn->real_escape_string($_POST['email']);
     $password = $_POST['password'];
-    $selected_role = $_POST['role']; // Selected role from dropdown
+    $selected_role = $_POST['role'];
 
-    // Query to fetch user by email
     $sql = "SELECT * FROM users WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
@@ -22,27 +19,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
 
-        // Verify password
         if (password_verify($password, $user['password'])) {
-
-            // Check if selected role matches user's role
             if ($user['role'] === $selected_role) {
-                // Set session and redirect
                 $_SESSION['user'] = $user;
 
-                // Redirect based on role
                 switch ($user['role']) {
                     case 'victim':
-                        header("Location:  dashboard/victim.home.php");
+                        header("Location: dashboard/victim.home.php");
                         break;
                     case 'police':
                         header("Location: dashboard/officer.php");
                         break;
                     case 'lawyer':
-                        header("Location: lawyer/view_abstracts.php");
+                        header("Location: dashboard/lawyer.php");
                         break;
-                    case 'insurance': 
-                        header("Location: admin/manage_insurance.php");
+                    case 'insurance':
+                        header("Location: dashboard/insurance.php");
                         break;
                     default:
                         $error = "Unknown user role.";
@@ -67,25 +59,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Login - Kenya Police Abstract System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"  rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
     <style>
         body {
-            background-color:rgb(248, 249, 250);
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #006400, #ffffff, #b41c1c); /* green, white, red */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+
         .login-card {
             max-width: 500px;
-            margin: 80px auto;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .login-card h3 {
+            font-weight: bold;
+            color: #000;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 100, 0, 0.25);
+            border-color: #006400;
+        }
+
+        .text-link {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .text-link a {
+            color: #b41c1c;
+            text-decoration: none;
+        }
+
+        .text-link a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
 <?php include 'header.php'; ?>
-<div class="login-card bg-blue-light">
-    <h3 class="text-center mb-4">Login to Kenya Police Abstract System</h3>
+
+<div class="login-card">
+    <h3><i class="fas fa-lock me-2"></i>Login to Abstract Issuance System</h3>
 
     <?php if (!empty($error)): ?>
         <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
@@ -94,33 +137,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="post" action="login.php">
         <div class="mb-3">
             <label for="email" class="form-label">Email Address</label>
-            <input type="email" name="email" id="email" class="form-control" required>
+            <input type="email" name="email" id="email" class="form-control form-control-lg" required>
         </div>
 
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
-            <input type="password" name="password" id="password" class="form-control" required>
+            <input type="password" name="password" id="password" class="form-control form-control-lg" required>
         </div>
 
-        <div class="mb-3">
+        <div class="mb-4">
             <label for="role" class="form-label">Login As</label>
-            <select name="role" id="role" class="form-select" required>
+            <select name="role" id="role" class="form-select form-select-lg" required>
                 <option value="">-- Select Role --</option>
                 <option value="victim">Victim</option>
                 <option value="police">Police Officer</option>
                 <option value="lawyer">Lawyer</option>
-                <option value="insurance">Insurance representative </option>
+                <option value="insurance">Insurance Representative</option>
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">Login</button>
+        <!-- ✅ GREEN BUTTON USING btn-success -->
+        <button type="submit" class="btn btn-success btn-lg w-100">Login</button>
     </form>
 
-    <p class="mt-3 text-center small">
+    <div class="text-link">
         Don't have an account? <a href="register.php">Register here</a>
-    </p>
+    </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

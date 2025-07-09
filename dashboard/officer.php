@@ -1,4 +1,4 @@
-<?php 
+<?php  
 session_start();
 
 // Check login
@@ -22,15 +22,84 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <title>Police Dashboard - Kenya Police Abstract System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"  rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background: linear-gradient(to right, #006400, #000, #b41c1c);
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .dashboard-container {
+            margin-top: 50px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .table {
+            background-color: #fff;
+            color: #000;
+        }
+
+        h1, h2 {
+            color: #fff;
+        }
+
+        .btn-info {
+            background-color: #28a745;
+            border: none;
+        }
+
+        .btn-info:hover {
+            background-color: #218838;
+        }
+
+        .btn-danger {
+            background-color: #b41c1c;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #8b1414;
+        }
+
+        .table thead {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .alert {
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .table-responsive {
+                overflow-x: auto;
+            }
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container mt-5 text-center">
-    <h1>Jambo, Officer</h1>
-    <h2>You are now logged in.</h2>
+<div class="dashboard-container">
+    <div class="text-center mb-4">
+        <h1><i class="fas fa-user-shield me-2"></i>Jambo, Officer</h1>
+        <h5>You are now logged in and ready to process reports.</h5>
+    </div>
 
-    <!-- ✅ Flash Messages -->
+    <!-- Flash Messages -->
     <?php if (isset($_SESSION['success'])): ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <?= $_SESSION['success']; unset($_SESSION['success']); ?>
@@ -45,61 +114,61 @@ $result = $conn->query($sql);
         </div>
     <?php endif; ?>
 
-    <p class="mb-4">Pending Reports</p>
+    <div class="mt-4 mb-3">
+        <h4>📄 Pending Abstract Reports</h4>
+    </div>
 
     <?php if ($result->num_rows === 0): ?>
         <div class="alert alert-info">No pending reports found.</div>
     <?php else: ?>
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Victim</th>
-                    <th>Type</th>
-                    <th>Date</th>
-                    <th>Location</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $result->fetch_assoc()): ?>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
                     <tr>
-                        <td><?= htmlspecialchars($row['id']) ?></td>
-                        <td><?= htmlspecialchars($row['victim_name']) ?></td>
-                        <td><?= ucfirst(htmlspecialchars($row['offence_type'])) ?></td>
-                        <td><?= htmlspecialchars($row['incident_date']) ?></td>
-                        <td><?= htmlspecialchars($row['location']) ?></td>
-                        <td>
-                            <a href="approve_reject.php?id=<?= $row['id'] ?>&action=approve" class="btn btn-success btn-sm"
-                               onclick="return confirm('Are you sure you want to approve this report?')">Approve</a>
-                            <a href="approve_reject.php?id=<?= $row['id'] ?>&action=reject" class="btn btn-danger btn-sm"
-                               onclick="return confirm('Are you sure you want to reject this report?')">Reject</a>
-                        </td>
+                        <th>ID</th>
+                        <th>Victim</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Action</th>
                     </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['user_id']) ?></td>
+                            <td><?= htmlspecialchars($row['victim_name']) ?></td>
+                            <td><?= ucfirst(htmlspecialchars($row['offence_type'])) ?></td>
+                            <td><?= htmlspecialchars($row['incident_date']) ?></td>
+                            <td><?= htmlspecialchars($row['location']) ?></td>
+                            <td>
+                                <a href="view_report.php?id=<?= $row['user_id'] ?>" class="btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
     <?php endif; ?>
 
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center">
-            <a href="../login.php" class="btn btn-danger">← Logout</a>
-        </div>
+    <div class="d-flex justify-content-end mt-4">
+        <a href="../login.php" class="btn btn-danger"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
     </div>
 </div>
 
-<!-- ✅ Bootstrap & Auto Fade Script -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> 
-<script>
-// Auto-hide alerts after 4 seconds
-setTimeout(function () {
-    let alerts = document.querySelectorAll('.alert');
-    alerts.forEach(function(alert) {
-        let fade = new bootstrap.Alert(alert);
-        alert.classList.remove('show');
-    });
-}, 4000);
-</script>
+<!-- Bootstrap Script -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- Auto-hide alerts -->
+<script>
+    setTimeout(function () {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            alert.classList.remove('show');
+        });
+    }, 4000);
+</script>
 </body>
 </html>

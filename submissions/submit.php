@@ -35,7 +35,7 @@ $vehicle_plate = isset($_POST['vehicle_plate']) ? $conn->real_escape_string($_PO
 $violation_type = isset($_POST['violation_type']) ? $conn->real_escape_string($_POST['violation_type']) : null;
 
 // Upload Files
-$upload_dir = "../../uploads/";
+$upload_dir = "../uploads/abstracts/";
 $file_paths = [];
 
 foreach ($_FILES['attachments']['name'] as $i => $name) {
