@@ -55,7 +55,7 @@ $stmt = $conn->prepare("
     INSERT INTO abstract_reports (
         user_id, offence_type, incident_date, incident_time, location,
         victim_name, victim_national_id, victim_dob, offender_details, description,
-        crime_type, witnesses, vehicle_plate, violation_type, file_paths
+        crime_type, witnesses, vehicle_plate, violation_type, abstract_file
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ");
 
